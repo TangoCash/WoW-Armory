@@ -17,10 +17,11 @@ Install
 
 1. Create database `wowarmory` on your mysql server
 2. Extract sql/wowarmory.sql.7z and apply to the database
-   e.g.: mysql -u root -p -D wowarmory < wowarmory.sql
+     e.g.: mysql -u root -p -D wowarmory < wowarmory.sql
 3. Rename includes/classes/configuration.php.default to configuration.php and edit this file (read comments).
-4. For Icons extract addons/wow-icons.7z to wow-icons
-5. For 3D Viewer extract addons/models.7z to models
-4. For full work you need to patch Trinity core with the appropriate patch file found in the LordPsyan-Patches/current/Armory folder
-   (http://lordpsyan.realmsofwarcraft.com/)
-5. If you use a UNIX system and enable cache, you need to manage access rights to allow script write data to 'cache' folder (chmod 777).
+4. For icons extract wow-icons.7z from git releases to wow-icons
+5. For 3D Viewer extract models.7z from git releases to models
+5.1. For alternative images extract images.7z from git releases to images
+6. For full work you need to patch Trinity core with the appropriate patch file found in the LordPsyan-Patches/current/Armory folder
+     (http://lordpsyan.realmsofwarcraft.com/)
+7. If you use a UNIX system and enable cache, you need to manage access rights to allow script write data to 'cache' folder (chmod 777).
