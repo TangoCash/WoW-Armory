@@ -64,7 +64,7 @@ Class SearchMgr {
                     $count_items = Armory::$wDB->selectCell("SELECT COUNT(`entry`) FROM `item_template` WHERE `name` LIKE '%s'", '%'.$this->searchQuery.'%');
                 }
                 else {
-                    $count_items = Armory::$wDB->selectCell("SELECT COUNT(`entry`) FROM `item_template` WHERE `name` LIKE '%s' OR `entry` IN (SELECT `entry` FROM `locales_item` WHERE `name_loc%d` LIKE '%s')", '%'.$this->searchQuery.'%', Armory::GetLoc(), '%'.$this->searchQuery.'%');
+                    $count_items = Armory::$wDB->selectCell("SELECT COUNT(`entry`) FROM `item_template` WHERE `name` LIKE '%s' OR `entry` IN (SELECT `ID` FROM `item_template_locale` WHERE `Name` LIKE '%s' AND `locale`=%d)", '%'.$this->searchQuery.'%', Armory::GetLoc(), '%'.$this->searchQuery.'%', str_replace("_","",Armory::GetLocale()));
                 }
             }
             if($count_items > 200) {
@@ -83,7 +83,7 @@ Class SearchMgr {
                 $items = Armory::$wDB->select("SELECT `entry` AS `id`, `name`, `ItemLevel`, `Quality` AS `rarity`, `displayid`, `bonding`, `flags`, `duration` FROM `item_template` WHERE `name` LIKE '%s' ORDER BY `ItemLevel` DESC LIMIT 200", '%'.$this->searchQuery.'%');
             }
             else {
-                $items = Armory::$wDB->select("SELECT `entry` AS `id`, `name`, `ItemLevel`, `Quality` AS `rarity`, `displayid`, `bonding`, `flags`, `duration` FROM `item_template` WHERE `name` LIKE '%s' OR `entry` IN (SELECT `entry` FROM `locales_item` WHERE `name_loc%d` LIKE '%s') ORDER BY `ItemLevel` DESC LIMIT 200", '%'.$this->searchQuery.'%', Armory::GetLoc(), '%'.$this->searchQuery.'%');
+                $items = Armory::$wDB->select("SELECT `entry` AS `id`, `name`, `ItemLevel`, `Quality` AS `rarity`, `displayid`, `bonding`, `flags`, `duration` FROM `item_template` WHERE `name` LIKE '%s' OR `entry` IN (SELECT `ID` FROM `item_template_locale` WHERE `Name` LIKE '%s' AND `locale`=%d) ORDER BY `ItemLevel` DESC LIMIT 200", '%'.$this->searchQuery.'%', Armory::GetLoc(), '%'.$this->searchQuery.'%', str_replace("_","",Armory::GetLocale()));
             }
         }
         if(!$items) {
@@ -109,7 +109,7 @@ Class SearchMgr {
             $tmp_names_holder = Armory::$wDB->select("SELECT `entry`, `name` AS `name` FROM `item_template` WHERE `entry` IN (%s)", $names_to_add);
         }
         else {
-            $tmp_names_holder = Armory::$wDB->select("SELECT `entry`, `name_loc%d` AS `name` FROM `locales_item` WHERE `entry` IN (%s)", Armory::GetLoc(), $names_to_add);
+            $tmp_names_holder = Armory::$wDB->select("SELECT `ID`, `Name` AS `name` FROM `item_template_locale` WHERE `ID` IN (%s) AND `locale`=%d", $names_to_add, str_replace("_","",Armory::GetLocale()));
         }
         foreach($tmp_names_holder as $name) {
             if($name['name'] == null) {
@@ -185,7 +185,7 @@ Class SearchMgr {
                 $_item_ids = Armory::$wDB->select("SELECT `entry` FROM `item_template` WHERE `name` LIKE '%s'", '%'.$this->searchQuery.'%');
             }
             else {
-                $_item_ids = Armory::$wDB->select("SELECT `entry` FROM `item_template` WHERE `name` LIKE '%s' OR `entry` IN (SELECT `entry` FROM `locales_item` WHERE `name_loc%d` LIKE '%s')", '%'.$this->searchQuery.'%', Armory::GetLoc(), '%%'.$this->searchQuery.'%%');
+                $_item_ids = Armory::$wDB->select("SELECT `entry` FROM `item_template` WHERE `name` LIKE '%s' OR `entry` IN (SELECT `ID` FROM `item_template_locale` WHERE `Name` LIKE '%s' AND `locale`=%d)", '%'.$this->searchQuery.'%', '%%'.$this->searchQuery.'%%', str_replace("_","",Armory::GetLocale()));
             }
             if(is_array($_item_ids)) {
                 $tmp_count_ids = count($_item_ids);
@@ -442,7 +442,7 @@ Class SearchMgr {
             $tmp_names_holder = Armory::$wDB->select("SELECT `entry`, `name` AS `name` FROM `item_template` WHERE `entry` IN (%s)", $names_to_add);
         }
         else {
-            $tmp_names_holder = Armory::$wDB->select("SELECT `entry`, `name_loc%d` AS `name` FROM `locales_item` WHERE `entry` IN (%s)", Armory::GetLoc(), $names_to_add);
+            $tmp_names_holder = Armory::$wDB->select("SELECT `ID`, `Name` AS `name` FROM `item_template_locale` WHERE `ID` IN (%s) AND `locale`=%d", $names_to_add, str_replace("_","",Armory::GetLocale()));
         }
         foreach($tmp_names_holder as $name) {
             if($name['name'] == null) {
@@ -869,7 +869,7 @@ Class SearchMgr {
                 $sql .= ",
                 `creature_loot_template`.`entry`,
                 `creature_loot_template`.`item`,
-                `creature_loot_template`.`ChanceOrQuestChance`
+                `creature_loot_template`.`Chance`
                 FROM `item_template` AS `item_template`
                 LEFT JOIN `creature_loot_template` AS `creature_loot_template` ON `creature_loot_template`.`item`=`item_template`.`entry`
                 WHERE";

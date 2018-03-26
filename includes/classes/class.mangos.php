@@ -111,7 +111,7 @@ Class Mangos {
                     $info = Armory::$wDB->selectCell("SELECT `LogTitle` FROM `quest_template` WHERE `ID`=%d", $quest);
                 }
                 else {
-                    $info = Armory::$wDB->selectCell("SELECT `Title_loc%d` FROM `locales_quest` WHERE `id`=%d", Armory::GetLoc(), $quest);
+                    $info = Armory::$wDB->selectCell("SELECT `Title` FROM `quest_template_locale` WHERE `ID`=%d AND `locale`=%d", $quest, str_replace("_","",Armory::GetLocale()));
                     if(!$info) {
                         $info = Armory::$wDB->selectCell("SELECT `LogTitle` FROM `quest_template` WHERE `ID`=%d", $quest);
                     }
@@ -523,23 +523,23 @@ Class Mangos {
         if(!isset($allowed_tables[$db_table])) {
             return 0;
         }
-        $lootTable = Armory::$wDB->select("SELECT `ChanceOrQuestChance`, `groupid`, `mincountOrRef`, `item` FROM `%s` WHERE `entry`=%d", $db_table, $boss_id);
+        $lootTable = Armory::$wDB->select("SELECT `Chance`, `groupid`, `mincount`, `item` FROM `%s` WHERE `entry`=%d", $db_table, $boss_id);
         if(!$lootTable) {
             return 0;
         }
         $percent = 0;
         foreach($lootTable as $loot) {
-            if($loot['ChanceOrQuestChance'] > 0 && $loot['item'] == $item_id) {
-                $percent = $loot['ChanceOrQuestChance'];
+            if($loot['Chance'] > 0 && $loot['item'] == $item_id) {
+                $percent = $loot['Chance'];
             }
-            elseif($loot['ChanceOrQuestChance'] == 0 && $loot['item'] == $item_id) {
+            elseif($loot['Chance'] == 0 && $loot['item'] == $item_id) {
                 $current_group = $loot['groupid'];
                 $percent = 0;
                 $i = 0;
                 foreach($lootTable as $tLoot) {
                     if($tLoot['groupid'] == $current_group) {
-                        if($tLoot['ChanceOrQuestChance'] > 0) {
-                            $percent += $tLoot['ChanceOrQuestChance'];
+                        if($tLoot['Chance'] > 0) {
+                            $percent += $tLoot['Chance'];
                         }
                         else {
                             $i++;

@@ -69,7 +69,7 @@ Class Items {
             $itemName = Armory::$wDB->selectCell("SELECT `name` FROM `item_template` WHERE `entry`=%d LIMIT 1", $itemID);
         }
         else {
-            $itemName = Armory::$wDB->selectCell("SELECT `name_loc%d` FROM `locales_item` WHERE `entry`=%d LIMIT 1", Armory::GetLoc(), $itemID);
+            $itemName = Armory::$wDB->selectCell("SELECT `Name` FROM `item_template_locale` WHERE `ID`=%d AND `locale`=%d LIMIT 1", $itemID, str_replace("_","",Armory::GetLocale()));
             if(!$itemName) {
                 $itemName = Armory::$wDB->selectCell("SELECT `name` FROM `item_template` WHERE `entry`=%d LIMIT 1", $itemID);
             }
@@ -108,7 +108,7 @@ Class Items {
             $itemDescription = Armory::$wDB->selectCell("SELECT `description` FROM `item_template` WHERE `entry`=%d LIMIT 1", $itemID);
         }
         else {
-            $itemDescription = Armory::$wDB->selectCell("SELECT `description_loc%d` FROM `locales_item` WHERE `entry`=%d LIMIT 1", Armory::GetLoc(), $itemID);
+            $itemDescription = Armory::$wDB->selectCell("SELECT `Description` FROM `item_template_locale` WHERE `ID`=%d AND `locale`=%d LIMIT 1", $itemID, str_replace("_","",Armory::GetLocale()));
             if(!$itemDescription) {
                 $itemDescription = Armory::$wDB->selectCell("SELECT `description` FROM `item_template` WHERE `entry`=%d LIMIT 1", $itemID);
             }
@@ -437,7 +437,7 @@ Class Items {
                 break;
             case 'disenchant':
                 $disenchantID = Armory::$wDB->selectCell("SELECT `DisenchantID` FROM `item_template` WHERE `entry` = %d", $item);
-                $DisenchantLoot = Armory::$wDB->select("SELECT `item`, `maxcount`, `mincountOrRef`, `ChanceOrQuestChance` FROM `disenchant_loot_template` WHERE `entry` = %d", $disenchantID);
+                $DisenchantLoot = Armory::$wDB->select("SELECT `item`, `maxcount`, `mincount`, `Chance` FROM `disenchant_loot_template` WHERE `entry` = %d", $disenchantID);
                 if(!is_array($DisenchantLoot)) {
                     return false;
                 }
@@ -450,7 +450,7 @@ Class Items {
                         'name'     => (Armory::GetLocale() == 'en_gb' || Armory::GetLocale() == 'en_us') ? $tmp_info['name'] : self::GetItemName($dItem['item']),
                         'dropRate' => Mangos::GetDropRate($drop_percent),
                         'maxCount' => $dItem['maxcount'],
-                        'minCount' => $dItem['mincountOrRef'],
+                        'minCount' => $dItem['mincount'],
                         'icon'     => self::GetItemIcon($dItem['item'], $tmp_info['displayid']),
                         'quality'  => $tmp_info['Quality']
                     );
