@@ -10,19 +10,17 @@ The data contained herein is proprietary to Blizzard Entertainment, Inc. You are
 Requirements
 
 1. Apache HTTP Server with mod_rewrite
-2. PHP 5.3 or higher with XMLWriter package installed and enabled (XMLWriter is installed and enabled by default since PHP 5.1.2)
-3. MySQL 5 Server or higher
+2. PHP 7.1 or higher
+3. MySQL 5.7 Server or higher
 
 Install
 
-1. Go to the patch folder and upload armory.sql (Will automatically create the database `armory`).
-2. Rename includes/classes/configuration.php.default to configuration.php and edit this file (read comments).
-   Characters DB configs are stored in
-       $ArmoryConfig['multiRealm'][1]['*_characters']
-   And World DB configs are stored in
-       $ArmoryConfig['multiRealm'][1]['*_mangos']
-   You should edit these values according with your MySQL configs (user/password/dbname).
-3. For 3D Viewer installation info read 3DViewer_info.txt
-4. For full work you need to patch MaNGOS/Trinity core with the appropriate patch file found in the patch folder
-   and to update your characters DB with the provided SQL update (characters.sql - in the patch folder).
-5. If you use a UNIX system, you need to manage access rights to allow script write data to 'cache' folder.
+1. Create database `wowarmory` on your mysql server
+2. Extract sql/wowarmory.sql.7z and apply to the database
+   e.g.: mysql -u root -p -D wowarmory < wowarmory.sql
+3. Rename includes/classes/configuration.php.default to configuration.php and edit this file (read comments).
+4. For Icons extract addons/wow-icons.7z to wow-icons
+5. For 3D Viewer extract addons/models.7z to models
+4. For full work you need to patch Trinity core with the appropriate patch file found in the LordPsyan-Patches/current/Armory folder
+   (http://lordpsyan.realmsofwarcraft.com/)
+5. If you use a UNIX system and enable cache, you need to manage access rights to allow script write data to 'cache' folder (chmod 777).
