@@ -28,8 +28,8 @@ if(!defined('__ARMORY__')) {
 
 Class XMLHandler {
     private $writer = null;
-    private $region = 'cn';
-    private $locale = 'zh_cn';
+    private $region = 'eu';
+    private $locale = 'de_de';
     private $attData = array();
 
     public function XMLHandler($locale = null, $region = null) {
