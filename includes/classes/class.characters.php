@@ -1245,7 +1245,7 @@ Class Characters {
                 if(!$current_tab) {
                     continue;
                 }
-                 foreach($current_tab as $tab) {
+                foreach($current_tab as $tab) {
                     for($j = 0; $j < 2; $j++) {
                         if(isset($specs_talents[$j][$tab['Rank_5']])) {
                             $talent_data[$j] .= 5;
@@ -1266,7 +1266,7 @@ Class Characters {
                             $talent_data[$j] .= 0;
                         }
                     }
-                }			
+                }
             }
 			//WORKAROUND TO TRANSLATE ALL ARRAY TO PREVIOUS ARRAY
         }

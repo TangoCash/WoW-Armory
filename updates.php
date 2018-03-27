@@ -43,3 +43,4 @@ $xml->XMLWriter()->endElement();  //updates
 $xml->XMLWriter()->endElement(); //page
 echo $xml->StopXML();
 exit;
+?>
